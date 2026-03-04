@@ -1,68 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-    <title>FORGE v2 -- Workout System</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
-        
-        :root { 
-            --a: #FF6B35; 
-            --a-dim: rgba(255,107,53,.15); 
-            --bg: #080808; 
-            --card: #0e0e0e; 
-            --border: #1a1a1a;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { 
-            background: var(--bg); 
-            color: #F0EDE8; 
-            font-family: 'DM Sans', sans-serif; 
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased; 
-            overflow-x: hidden;
-        }
-        h1, h2, h3, .bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
-
-        .main { max-width: 600px; margin: 0 auto; padding: 20px 20px 140px; }
-        .fade { animation: fi .4s ease-out; }
-        @keyframes fi { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* HEADER */
-        .hdr { border-bottom: 1px solid #111; padding: 14px 22px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--bg); z-index: 200; }
-        .hdr-logo { font-size: 1.8rem; letter-spacing: 5px; color: #fff; }
-        .hdr-ver { font-size: .6rem; color: var(--a); letter-spacing: 3px; }
-
-        /* BUTTONS */
-        .btn-p { 
-            background: var(--a); color: #000; border: none; padding: 16px; 
-            font-family: 'Bebas Neue'; font-size: 1.2rem; cursor: pointer; transition: .2s; 
-            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); 
-            width: 100%; margin-top: 10px;
-        }
-        .btn-p:active { transform: scale(0.98); }
-        .btn-s { background: #1a1a1a; color: #fff; font-size: 0.8rem; padding: 8px 16px; border: none; cursor: pointer; font-family: 'Bebas Neue'; letter-spacing: 1px; }
-
-        /* SECTIONS & GRIDS */
-        .sec { margin-bottom: 25px; }
-        .sec-label { font-size: .7rem; color: #555; margin-bottom: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-
-        /* CARDS */
-        .card { background: var(--card); border: 1px solid var(--border); padding: 15px; cursor: pointer; transition: .1s; text-align: center; }
-        .card.on { border-color: var(--a); background: var(--a-dim); color: var(--a); }
-        .card-label { font-family: 'Bebas Neue'; font-size: 1rem; }
-
-        /* WORKOUT LIST */
-        .ex-item { background: #0e0e0e; border-left: 3px solid #222; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: .3s; }
-        .ex-item.active { border-left-color: var(--a); background: #131313; }
-        .ex-name { font-family: 'Bebas Neue'; font-size: 1.3rem; color: #fff; letter-spacing: 1px; }
-        .ex-meta { font-size: .75rem; color: #666; margin-top: 4px; font-weight: 500; }
-        .ex-note { font-size: 0.65rem; color: #444; font-style: italic; margin-top: 4px; }
-
-        /* TIMER BOX */
-        .timer-overlay {
-            position: fixed; bottom: 0; left: 0; right:
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>FORGE v2 — Workout System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808;color:#F0EDE8;font-family:'Bebas Neue',Impact,sans-serif;min-height:100%;-webkit-font-smoothing:antialiased}
+:root{--a:#FF6B35;--a-dim:rgba(255,107,53,.15)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:#0e0e0e}::-webkit-scrollbar-thumb{background:#2a2a2a}
+.fade{animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.hdr{border-bottom:1px solid #111;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#080808;z-index:200}
+.hdr-l{display:flex;align-items:center;gap:10px}
+.hdr-logo{font-size:1.3rem;letter-spacing:4px}
+.hdr-ver{font-family:'DM Sans',sans-serif
