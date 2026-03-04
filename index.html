@@ -26,7 +26,7 @@
         }
         h1, h2, h3, .bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
 
-        .main { max-width: 600px; margin: 0 auto; padding: 20px 20px 120px; }
+        .main { max-width: 600px; margin: 0 auto; padding: 20px 20px 140px; }
         .fade { animation: fi .4s ease-out; }
         @keyframes fi { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -43,7 +43,7 @@
             width: 100%; margin-top: 10px;
         }
         .btn-p:active { transform: scale(0.98); }
-        .btn-s { background: #1a1a1a; color: #fff; font-size: 0.9rem; padding: 10px; border: none; cursor: pointer; }
+        .btn-s { background: #1a1a1a; color: #fff; font-size: 0.8rem; padding: 8px 16px; border: none; cursor: pointer; font-family: 'Bebas Neue'; letter-spacing: 1px; }
 
         /* SECTIONS & GRIDS */
         .sec { margin-bottom: 25px; }
@@ -57,226 +57,12 @@
         .card-label { font-family: 'Bebas Neue'; font-size: 1rem; }
 
         /* WORKOUT LIST */
-        .ex-item { background: #0e0e0e; border-left: 3px solid #222; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: .3s; }
+        .ex-item { background: #0e0e0e; border-left: 3px solid #222; padding: 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: .3s; }
         .ex-item.active { border-left-color: var(--a); background: #131313; }
-        .ex-name { font-family: 'Bebas Neue'; font-size: 1.2rem; color: #fff; }
-        .ex-meta { font-size: .75rem; color: #666; margin-top: 2px; }
+        .ex-name { font-family: 'Bebas Neue'; font-size: 1.3rem; color: #fff; letter-spacing: 1px; }
+        .ex-meta { font-size: .75rem; color: #666; margin-top: 4px; font-weight: 500; }
+        .ex-note { font-size: 0.65rem; color: #444; font-style: italic; margin-top: 4px; }
 
         /* TIMER BOX */
         .timer-overlay {
-            position: fixed; bottom: 0; left: 0; right: 0; background: #111; border-top: 2px solid var(--a);
-            padding: 20px; z-index: 1000; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .timer-overlay.show { transform: translateY(0); }
-        .timer-flex { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
-        .timer-val { font-family: 'Bebas Neue'; font-size: 3rem; color: var(--a); line-height: 1; }
-        .timer-info { font-size: 0.8rem; color: #888; }
-
-        .hidden { display: none; }
-        .stat-bar { display: flex; gap: 4px; margin-bottom: 20px; }
-        .stat-i { flex: 1; background: #111; padding: 10px; text-align: center; border-bottom: 2px solid var(--a); }
-        .stat-v { font-family: 'Bebas Neue'; font-size: 1.2rem; }
-    </style>
-</head>
-<body>
-
-<div id="app">
-    <header class="hdr">
-        <div class="hdr-l">
-            <span class="hdr-logo bebas">FORGE</span>
-            <span class="hdr-ver bebas">V2.1</span>
-        </div>
-    </header>
-
-    <div id="setup-view" class="main fade">
-        <section class="sec">
-            <h3 class="sec-label">Training Goal</h3>
-            <div class="grid-2" id="goal-container"></div>
-        </section>
-
-        <section class="sec">
-            <h3 class="sec-label">Experience Level</h3>
-            <div class="grid-2" id="diff-container"></div>
-        </section>
-
-        <section class="sec">
-            <h3 class="sec-label">Target Groups</h3>
-            <div class="grid-4" id="parts-container"></div>
-        </section>
-
-        <button class="btn-p bebas" onclick="forgeWorkout()">FORGE WORKOUT</button>
-    </div>
-
-    <div id="workout-view" class="main fade hidden">
-        <div class="stat-bar">
-            <div class="stat-i"><span class="stat-v" id="st-ex">0</span><div style="font-size:0.6rem">EXERCISES</div></div>
-            <div class="stat-i"><span class="stat-v" id="st-sets">0</span><div style="font-size:0.6rem">TOTAL SETS</div></div>
-            <div class="stat-i"><span class="stat-v" id="st-rest">60s</span><div style="font-size:0.6rem">REST</div></div>
-        </div>
-        <div id="exercise-list"></div>
-        <button class="btn-p bebas" onclick="location.reload()" style="background:#222; color:#888; margin-top:40px;">ABORT SESSION</button>
-    </div>
-
-    <div id="timer-overlay" class="timer-overlay">
-        <div class="timer-flex">
-            <div>
-                <div class="timer-info bebas">REST ACTIVE</div>
-                <div id="timer-display" class="timer-val">00:60</div>
-            </div>
-            <button class="btn-p bebas" style="width:120px;" onclick="stopTimer()">SKIP</button>
-        </div>
-    </div>
-</div>
-
-
-
-<script>
-    // --- DATA ---
-    const GOALS = [
-        { id: 'hypertrophy', label: 'Hypertrophy', icon: '💪' },
-        { id: 'strength', label: 'Strength', icon: '🏋️' },
-        { id: 'fat_loss', label: 'Conditioning', icon: '🔥' },
-        { id: 'joint_stability', label: 'Longevity', icon: '🦾' }
-    ];
-    const DIFFS = [{ id: 'beginner', label: 'Beginner' }, { id: 'advanced', label: 'Advanced' }];
-    const BODY_PARTS = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Core'];
-
-    const LIBRARY = [
-        { name: 'Barbell Bench Press', parts: ['Chest', 'Triceps'], goals: ['hypertrophy', 'strength'], diff: 'advanced', sets: 4, reps: '6-8', rest: 90 },
-        { name: 'DB Chest Press', parts: ['Chest', 'Triceps'], goals: ['hypertrophy'], diff: 'beginner', sets: 3, reps: '10-12', rest: 60 },
-        { name: 'Pull-Ups', parts: ['Back', 'Biceps'], goals: ['strength', 'hypertrophy'], diff: 'advanced', sets: 3, reps: 'MAX', rest: 90 },
-        { name: 'Lat Pulldowns', parts: ['Back', 'Biceps'], goals: ['hypertrophy'], diff: 'beginner', sets: 3, reps: '10-12', rest: 60 },
-        { name: 'Overhead Press', parts: ['Shoulders', 'Triceps'], goals: ['strength'], diff: 'advanced', sets: 4, reps: '5-8', rest: 90 },
-        { name: 'Lateral Raises', parts: ['Shoulders'], goals: ['hypertrophy', 'fat_loss'], diff: 'beginner', sets: 4, reps: '15-20', rest: 45 },
-        { name: 'Barbell Squats', parts: ['Quads', 'Hamstrings'], goals: ['strength'], diff: 'advanced', sets: 5, reps: '5', rest: 120 },
-        { name: 'Goblet Squats', parts: ['Quads'], goals: ['hypertrophy', 'fat_loss'], diff: 'beginner', sets: 3, reps: '12-15', rest: 60 },
-        { name: 'Plank', parts: ['Core'], goals: ['joint_stability', 'fat_loss'], diff: 'beginner', sets: 3, reps: '60s', rest: 30 },
-        { name: 'Deadlift', parts: ['Back', 'Hamstrings'], goals: ['strength'], diff: 'advanced', sets: 3, reps: '5', rest: 180 }
-    ];
-
-    // --- STATE ---
-    let state = { goal: 'hypertrophy', diff: 'beginner', selectedParts: [], timerInterval: null };
-
-    // --- WEB AUDIO BEEP ---
-    function playBeep() {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.type = 'sine'; osc.frequency.setValueAtTime(880, ctx.currentTime);
-        gain.gain.setValueAtTime(0, ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.1);
-        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
-        osc.start(); osc.stop(ctx.currentTime + 0.5);
-    }
-
-    // --- INITIALIZE UI ---
-    function init() {
-        const goalCont = document.getElementById('goal-container');
-        GOALS.forEach(g => {
-            const div = document.createElement('div');
-            div.className = `card ${state.goal === g.id ? 'on' : ''}`;
-            div.onclick = () => { state.goal = g.id; refreshSelection(); };
-            div.innerHTML = `<div style="font-size:1.2rem">${g.icon}</div><div class="card-label">${g.label}</div>`;
-            goalCont.appendChild(div);
-        });
-
-        const diffCont = document.getElementById('diff-container');
-        DIFFS.forEach(d => {
-            const div = document.createElement('div');
-            div.className = `card ${state.diff === d.id ? 'on' : ''}`;
-            div.onclick = () => { state.diff = d.id; refreshSelection(); };
-            div.innerHTML = `<div class="card-label">${d.label}</div>`;
-            diffCont.appendChild(div);
-        });
-
-        const partsCont = document.getElementById('parts-container');
-        BODY_PARTS.forEach(p => {
-            const div = document.createElement('div');
-            div.className = `card`;
-            div.onclick = () => {
-                if(state.selectedParts.includes(p)) state.selectedParts = state.selectedParts.filter(i => i !== p);
-                else state.selectedParts.push(p);
-                div.classList.toggle('on');
-            };
-            div.innerHTML = `<div class="card-label" style="font-size:0.7rem">${p}</div>`;
-            partsCont.appendChild(div);
-        });
-    }
-
-    function refreshSelection() {
-        document.querySelectorAll('#goal-container .card').forEach((c, i) => c.className = `card ${state.goal === GOALS[i].id ? 'on' : ''}`);
-        document.querySelectorAll('#diff-container .card').forEach((c, i) => c.className = `card ${state.diff === DIFFS[i].id ? 'on' : ''}`);
-    }
-
-    // --- LOGIC ---
-    function forgeWorkout() {
-        if (state.selectedParts.length === 0) return alert("Select target muscles!");
-        
-        const filtered = LIBRARY.filter(ex => 
-            ex.parts.some(p => state.selectedParts.includes(p)) &&
-            ex.goals.includes(state.goal)
-        );
-
-        if (filtered.length === 0) return alert("No exercises match this combo. Try adding more muscle groups!");
-
-        document.getElementById('setup-view').classList.add('hidden');
-        document.getElementById('workout-view').classList.remove('hidden');
-
-        const list = document.getElementById('exercise-list');
-        list.innerHTML = '';
-        
-        filtered.forEach((ex, idx) => {
-            const div = document.createElement('div');
-            div.className = 'ex-item fade';
-            div.style.animationDelay = `${idx * 0.1}s`;
-            div.innerHTML = `
-                <div>
-                    <div class="ex-name">${ex.name}</div>
-                    <div class="ex-meta">${ex.sets} SETS • ${ex.reps} REPS</div>
-                </div>
-                <button class="btn-s bebas" onclick="startRest(${ex.rest}, this.parentElement)">REST</button>
-            `;
-            list.appendChild(div);
-        });
-
-        document.getElementById('st-ex').innerText = filtered.length;
-        document.getElementById('st-sets').innerText = filtered.reduce((a, b) => a + b.sets, 0);
-    }
-
-    // --- TIMER ENGINE ---
-    function startRest(seconds, element) {
-        // Highlight active exercise
-        document.querySelectorAll('.ex-item').forEach(el => el.classList.remove('active'));
-        element.classList.add('active');
-
-        let remaining = seconds;
-        const overlay = document.getElementById('timer-overlay');
-        const display = document.getElementById('timer-display');
-        
-        overlay.classList.add('show');
-        display.innerText = `00:${remaining.toString().padStart(2, '0')}`;
-
-        clearInterval(state.timerInterval);
-        state.timerInterval = setInterval(() => {
-            remaining--;
-            const mins = Math.floor(remaining / 60);
-            const secs = remaining % 60;
-            display.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
-            if (remaining <= 0) {
-                stopTimer();
-                playBeep();
-            }
-        }, 1000);
-    }
-
-    function stopTimer() {
-        clearInterval(state.timerInterval);
-        document.getElementById('timer-overlay').classList.remove('show');
-    }
-
-    init();
-</script>
-</body>
-</html>
+            position: fixed; bottom: 0; left: 0; right:
